@@ -1,4 +1,3 @@
-// import { createNonexistentExtent, Extent } from "./Extent.ts";
 import { BBox, LayerObjectUnion } from "./type.ts";
 import { createNonexistentBBox, mergeBBox } from "./utils";
 
