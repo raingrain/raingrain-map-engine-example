@@ -1,18 +1,6 @@
 import { Position } from "../type.ts";
 import { cloneDeep } from "lodash";
 
-function getX(position: Position) {
-    return position[0];
-}
-
-function getY(position: Position) {
-    return position[1];
-}
-
-function copyPosition(position: Position) {
-    return cloneDeep(position);
-}
-
 function createPosition(position: Position): Position
 function createPosition(x: number, y: number): Position
 function createPosition(parameter1: Position | number, parameter2?: number) {
@@ -24,9 +12,31 @@ function createPosition(parameter1: Position | number, parameter2?: number) {
     }
 }
 
+function copyPosition(position: Position) {
+    return cloneDeep(position);
+}
+
+function getX(position: Position) {
+    return position[0];
+}
+
+function setX(position: Position, newX: number) {
+    position[0] = newX;
+}
+
+function getY(position: Position) {
+    return position[1];
+}
+
+function setY(position: Position, newY: number) {
+    position[1] = newY;
+}
+
 export {
+    createPosition,
+    copyPosition,
     getX,
     getY,
-    copyPosition,
-    createPosition
+    setX,
+    setY
 };

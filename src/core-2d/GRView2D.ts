@@ -79,16 +79,6 @@ class GRView2D {
         this.drag();
     }
 
-    // 地图放大
-    // zoomInFromCenter = () => {
-    //     this.mapBBox.bbox = [
-    //         ((this.mapBBox.maxX + this.mapBBox.minX) - (this.mapBBox.maxX - this.mapBBox.minX) / this.zoomFactor) / 2,
-    //         ((this.mapBBox.maxY + this.mapBBox.minY) - (this.mapBBox.maxY - this.mapBBox.minY) / this.zoomFactor) / 2,
-    //         ((this.mapBBox.maxX + this.mapBBox.minX) + (this.mapBBox.maxX - this.mapBBox.minX) / this.zoomFactor) / 2,
-    //         ((this.mapBBox.maxY + this.mapBBox.minY) + (this.mapBBox.maxY - this.mapBBox.minY) / this.zoomFactor) / 2
-    //     ];
-    // };
-
     zoomIn = (event: any) => {
         const newWidth = getWidth(this.mapBBox) / 2;
         const newHeight = getHeight(this.mapBBox) / 2;
@@ -97,18 +87,7 @@ class GRView2D {
         const offsetY = -(this.screenHeight / 2 - event.canvasY) * this.scaleY / 2;
         const newCenter = [zoomPoint[0] + offsetX, zoomPoint[1] + offsetY];
         this.mapBBox = [newCenter[0] - newWidth / 2, newCenter[1] - newHeight / 2, newCenter[0] + newWidth / 2, newCenter[1] + newHeight / 2];
-
     };
-
-    // 地图缩小
-    // zoomOutFromCenter = () => {
-    //     this.mapBBox.bbox = [
-    //         ((this.mapBBox.maxX + this.mapBBox.minX) - (this.mapBBox.maxX - this.mapBBox.minX) * this.zoomFactor) / 2,
-    //         ((this.mapBBox.maxY + this.mapBBox.minY) - (this.mapBBox.maxY - this.mapBBox.minY) * this.zoomFactor) / 2,
-    //         ((this.mapBBox.maxX + this.mapBBox.minX) + (this.mapBBox.maxX - this.mapBBox.minX) * this.zoomFactor) / 2,
-    //         ((this.mapBBox.maxY + this.mapBBox.minY) + (this.mapBBox.maxY - this.mapBBox.minY) * this.zoomFactor) / 2
-    //     ];
-    // };
 
     zoomOut = (event: any) => {
         const newWidth = getWidth(this.mapBBox) * 2;

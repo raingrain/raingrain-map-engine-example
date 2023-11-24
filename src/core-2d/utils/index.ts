@@ -1,4 +1,11 @@
-export { getX, getY } from "./position.ts";
+export {
+    createPosition,
+    copyPosition,
+    getX,
+    getY,
+    setX,
+    setY
+} from "./positionOperations.ts";
 export {
     createBBox,
     createNonexistentBBox,
@@ -19,4 +26,4 @@ export {
     getPolygonBBox,
     getMultiPolygonBBox,
     mergeBBox
-} from "./bbox.ts";
+} from "./bboxOperations.ts";

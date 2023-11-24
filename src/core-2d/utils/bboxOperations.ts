@@ -1,28 +1,25 @@
 import { BBox, Position } from "../type.ts";
-import { createPosition, getX, getY } from "./position.ts";
+import { createPosition, getX, getY } from "./positionOperations.ts";
 import { cloneDeep } from "lodash";
 
-function getPolygonBBox(coordinates: Position[][]) {
-    const bbox = createNonexistentBBox();
-    coordinates.forEach((lineString) => {
-        lineString.forEach((point) => {
-            setBBox(
-                bbox,
-                Math.min(getMinX(bbox), getX(point)),
-                Math.min(getMinY(bbox), getY(point)),
-                Math.max(getMaxX(bbox), getX(point)),
-                Math.max(getMaxY(bbox), getY(point))
-            );
-        });
-    });
-    return bbox;
+function createBBox(bottomLeft: Position, topRight: Position): BBox;
+function createBBox(minX: number, minY: number, maxX: number, maxY: number): BBox
+function createBBox(
+    parameter1: Position | number,
+    parameter2?: Position | number,
+    parameter3?: number,
+    parameter4?: number
+) {
+    if (Array.isArray(parameter1) && Array.isArray(parameter2)) {
+        return [...parameter1, ...parameter2];
+    }
+    if (typeof parameter1 === "number" && typeof parameter2 === "number" && typeof parameter3 === "number" && typeof parameter4 === "number") {
+        return [parameter1, parameter2, parameter3, parameter4];
+    }
 }
 
-function getMultiPolygonBBox(coordinates: Position[][][]) {
-    const multiPolygonBBox = coordinates.map((polygon) => {
-        return getPolygonBBox(polygon);
-    });
-    return mergeBBox(...multiPolygonBBox);
+function createNonexistentBBox(): BBox {
+    return createBBox(Infinity, Infinity, -Infinity, -Infinity);
 }
 
 function getMinX(bbox: BBox) {
@@ -95,26 +92,6 @@ function copyBBox(bbox: BBox) {
     return cloneDeep(bbox);
 }
 
-function createBBox(bottomLeft: Position, topRight: Position): BBox;
-function createBBox(minX: number, minY: number, maxX: number, maxY: number): BBox
-function createBBox(
-    parameter1: Position | number,
-    parameter2?: Position | number,
-    parameter3?: number,
-    parameter4?: number
-) {
-    if (Array.isArray(parameter1) && Array.isArray(parameter2)) {
-        return [...parameter1, ...parameter2];
-    }
-    if (typeof parameter1 === "number" && typeof parameter2 === "number" && typeof parameter3 === "number" && typeof parameter4 === "number") {
-        return [parameter1, parameter2, parameter3, parameter4];
-    }
-}
-
-function createNonexistentBBox(): BBox {
-    return createBBox(Infinity, Infinity, -Infinity, -Infinity);
-}
-
 function mergeBBox(...bboxes: BBox[]) {
     const mergeBBox = createNonexistentBBox();
     bboxes.forEach((bbox) => {
@@ -127,6 +104,29 @@ function mergeBBox(...bboxes: BBox[]) {
         );
     });
     return mergeBBox;
+}
+
+function getPolygonBBox(coordinates: Position[][]) {
+    const bbox = createNonexistentBBox();
+    coordinates.forEach((lineString) => {
+        lineString.forEach((point) => {
+            setBBox(
+                bbox,
+                Math.min(getMinX(bbox), getX(point)),
+                Math.min(getMinY(bbox), getY(point)),
+                Math.max(getMaxX(bbox), getX(point)),
+                Math.max(getMaxY(bbox), getY(point))
+            );
+        });
+    });
+    return bbox;
+}
+
+function getMultiPolygonBBox(coordinates: Position[][][]) {
+    const multiPolygonBBox = coordinates.map((polygon) => {
+        return getPolygonBBox(polygon);
+    });
+    return mergeBBox(...multiPolygonBBox);
 }
 
 export {
