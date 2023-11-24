@@ -1,4 +1,4 @@
-import { Feature, FeatureObjectUnion, GeoJSON, Geometry, MultiPolygon, Point } from "./type.ts";
+import { Feature, FeatureObjectUnion, GeoJSON, Geometry } from "./type.ts";
 import { createMultiPolygonFeature, createPointFeature, MultiPolygonFeature, PointFeature } from "./Feature.ts";
 import { createMultiPolygonLayer, createPointLayer } from "./Layer.ts";
 import { createMapDocument } from "./MapDocument.ts";
@@ -62,9 +62,9 @@ function readGeometry(geometry: Geometry) {
     }
 }
 
-function readPoint(geometry: Point) {
-    return createPointFeature(geometry.coordinates);
-}
+// function readPoint(geometry: Point) {
+//     return createPointFeature(geometry.coordinates);
+// }
 
 // function readMultiPoint(geometry: MultiPoint) {
 //     console.log(geometry);
@@ -82,9 +82,9 @@ function readPoint(geometry: Point) {
 //
 // }
 
-function readMultiPolygon(geometry: MultiPolygon) {
-    return new MultiPolygonFeature(geometry.coordinates);
-}
+// function readMultiPolygon(geometry: MultiPolygon) {
+//     return new MultiPolygonFeature(geometry.coordinates);
+// }
 
 // function readGeometryCollection(geometry: GeometryCollection) {
 //

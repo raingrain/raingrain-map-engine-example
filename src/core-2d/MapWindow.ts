@@ -23,6 +23,7 @@ class MapWindow {
     public canvas: Canvas;
     public screenWidth: number;
     public screenHeight: number;
+    // @ts-ignore
     public mapBBox: BBox;
     public mapDocument: MapDocument;
     public zoomFactor: number = 2;
