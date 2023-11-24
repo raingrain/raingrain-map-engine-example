@@ -2,11 +2,11 @@ import {
     Feature,
     GeoJsonProperties,
     MultiPolygon,
-    MultiPolygonFeatureRenderingObject,
+    MultiPolygonFeatureDisplayObject,
     Point,
-    PointFeatureRenderingObject,
+    PointFeatureDisplayObject,
     Polygon,
-    PolygonFeatureRenderingObject,
+    PolygonFeatureDisplayObject,
     Position
 } from "./type.ts";
 import { createBBox, getMultiPolygonBBox, getPolygonBBox } from "./utils";
@@ -16,7 +16,7 @@ class PointFeature implements Feature {
 
     public type: "Feature" = "Feature";
     public properties: GeoJsonProperties;
-    public renderingObject: PointFeatureRenderingObject = null;
+    public displayObject: PointFeatureDisplayObject = null;
     public geometry: Point;
 
     constructor(coordinates: Position, properties: GeoJsonProperties = null) {
@@ -39,7 +39,7 @@ class PolygonFeature implements Feature {
 
     public type: "Feature" = "Feature";
     public properties: GeoJsonProperties;
-    public renderingObject: PolygonFeatureRenderingObject = null;
+    public displayObject: PolygonFeatureDisplayObject = null;
     public geometry: Polygon;
 
     constructor(coordinates: Position[][], properties: GeoJsonProperties = null) {
@@ -61,7 +61,7 @@ class MultiPolygonFeature implements Feature {
 
     public type: "Feature" = "Feature";
     public properties: GeoJsonProperties;
-    public renderingObject: MultiPolygonFeatureRenderingObject = null;
+    public displayObject: MultiPolygonFeatureDisplayObject = null;
     public geometry: MultiPolygon;
 
     constructor(coordinates: Position[][][], properties: GeoJsonProperties = null) {

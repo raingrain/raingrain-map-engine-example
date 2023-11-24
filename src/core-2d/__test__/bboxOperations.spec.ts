@@ -18,6 +18,7 @@ import {
     mergeBBox,
     setBBox,
     setCenter,
+    setCenterAndWidthAndHeight,
     setMaxX,
     setMaxY,
     setMinX,
@@ -59,6 +60,8 @@ describe("bbox test", () => {
         expect(getCenter(bbox)).toStrictEqual([50, 50]);
         setCenter(bbox, [0, 0]);
         expect(bbox).toStrictEqual([-50, -50, 50, 50]);
+        setCenterAndWidthAndHeight(bbox, createPosition(100, 100), 30, 30);
+        expect(bbox).toStrictEqual([85, 85, 115, 115]);
     });
     test("test mergeBBox", () => {
         let minX = Infinity;

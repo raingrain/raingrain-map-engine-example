@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { copyPosition, createPosition, getX, getY, setX, setY } from "../utils";
+import { copyPosition, createPosition, getX, getY, setX, setXY, setY } from "../utils";
 
 describe("position test", () => {
     test("test createPosition", () => {
@@ -20,5 +20,7 @@ describe("position test", () => {
         setX(position, 100);
         setY(position, 0);
         expect(position).toStrictEqual([100, 0]);
+        setXY(position, 200, 300);
+        expect(position).toStrictEqual([200, 300]);
     });
 });

@@ -4,7 +4,8 @@ export {
     getX,
     getY,
     setX,
-    setY
+    setY,
+    setXY
 } from "./positionOperations.ts";
 export {
     createBBox,
@@ -23,6 +24,7 @@ export {
     getHeight,
     getCenter,
     setCenter,
+    setCenterAndWidthAndHeight,
     getPolygonBBox,
     getMultiPolygonBBox,
     mergeBBox

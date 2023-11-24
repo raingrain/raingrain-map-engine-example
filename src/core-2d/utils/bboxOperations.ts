@@ -28,6 +28,7 @@ function getMinX(bbox: BBox) {
 
 function setMinX(bbox: BBox, newMinX: number) {
     bbox[0] = newMinX;
+    return bbox;
 }
 
 function getMinY(bbox: BBox) {
@@ -36,6 +37,7 @@ function getMinY(bbox: BBox) {
 
 function setMinY(bbox: BBox, newMinY: number) {
     bbox[1] = newMinY;
+    return bbox;
 }
 
 function getMaxX(bbox: BBox) {
@@ -44,6 +46,7 @@ function getMaxX(bbox: BBox) {
 
 function setMaxX(bbox: BBox, newMaxX: number) {
     bbox[2] = newMaxX;
+    return bbox;
 }
 
 function getMaxY(bbox: BBox) {
@@ -52,6 +55,7 @@ function getMaxY(bbox: BBox) {
 
 function setMaxY(bbox: BBox, newMaxY: number) {
     bbox[3] = newMaxY;
+    return bbox;
 }
 
 function setBBox(bbox: BBox, newMinX: number, newMinY: number, newMaxX: number, newMaxY: number) {
@@ -59,6 +63,7 @@ function setBBox(bbox: BBox, newMinX: number, newMinY: number, newMaxX: number, 
     setMinY(bbox, newMinY);
     setMaxX(bbox, newMaxX);
     setMaxY(bbox, newMaxY);
+    return bbox;
 }
 
 function getWidth(bbox: BBox) {
@@ -86,6 +91,15 @@ function setCenter(bbox: BBox, newCenter: Position) {
     setMinY(bbox, newMinY);
     setMaxX(bbox, newMaxX);
     setMaxY(bbox, newMaxY);
+    return bbox;
+}
+
+function setCenterAndWidthAndHeight(bbox: BBox, center: Position, width: number, height: number) {
+    setMinX(bbox, getX(center) - width / 2);
+    setMinY(bbox, getY(center) - height / 2);
+    setMaxX(bbox, getX(center) + width / 2);
+    setMaxY(bbox, getY(center) + height / 2);
+    return bbox;
 }
 
 function copyBBox(bbox: BBox) {
@@ -146,6 +160,7 @@ export {
     getHeight,
     getCenter,
     setCenter,
+    setCenterAndWidthAndHeight,
     getPolygonBBox,
     getMultiPolygonBBox,
     mergeBBox

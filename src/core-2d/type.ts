@@ -12,25 +12,25 @@ type GeoJsonProperties =
     }
     | null;
 
-type PointFeatureRenderingObject = Circle | null;
+type PointFeatureDisplayObject = Circle | null;
 
-type MultiPointFeatureRenderingObject = Circle[] | null;
+type MultiPointFeatureDisplayObject = Circle[] | null;
 
-type LineStringFeatureRenderingObject = Polyline | null;
+type LineStringFeatureDisplayObject = Polyline | null;
 
-type MultiLineStringFeatureRenderingObject = Polyline[] | null;
+type MultiLineStringFeatureDisplayObject = Polyline[] | null;
 
-type PolygonFeatureRenderingObject = GPolygon | null;
+type PolygonFeatureDisplayObject = GPolygon | null;
 
-type MultiPolygonFeatureRenderingObject = GPolygon[] | null
+type MultiPolygonFeatureDisplayObject = GPolygon[] | null
 
-type FeatureRenderingObject =
-    PointFeatureRenderingObject
-    | MultiPointFeatureRenderingObject
-    | LineStringFeatureRenderingObject
-    | MultiLineStringFeatureRenderingObject
-    | PolygonFeatureRenderingObject
-    | MultiPolygonFeatureRenderingObject
+type FeatureDisplayObject =
+    PointFeatureDisplayObject
+    | MultiPointFeatureDisplayObject
+    | LineStringFeatureDisplayObject
+    | MultiLineStringFeatureDisplayObject
+    | PolygonFeatureDisplayObject
+    | MultiPolygonFeatureDisplayObject
 
 type Geometry = Point | MultiPoint | LineString | MultiLineString | Polygon | MultiPolygon | GeometryCollection;
 
@@ -113,13 +113,13 @@ export type {
     Position,
     BBox,
     GeoJsonProperties,
-    PointFeatureRenderingObject,
-    MultiPointFeatureRenderingObject,
-    LineStringFeatureRenderingObject,
-    MultiLineStringFeatureRenderingObject,
-    PolygonFeatureRenderingObject,
-    MultiPolygonFeatureRenderingObject,
-    FeatureRenderingObject,
+    PointFeatureDisplayObject,
+    MultiPointFeatureDisplayObject,
+    LineStringFeatureDisplayObject,
+    MultiLineStringFeatureDisplayObject,
+    PolygonFeatureDisplayObject,
+    MultiPolygonFeatureDisplayObject,
+    FeatureDisplayObject,
     // FeatureObject,
     FeatureObjectUnion,
     FeatureObjectArrayUnion,

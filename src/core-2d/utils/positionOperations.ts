@@ -22,6 +22,7 @@ function getX(position: Position) {
 
 function setX(position: Position, newX: number) {
     position[0] = newX;
+    return position;
 }
 
 function getY(position: Position) {
@@ -30,6 +31,13 @@ function getY(position: Position) {
 
 function setY(position: Position, newY: number) {
     position[1] = newY;
+    return position;
+}
+
+function setXY(position: Position, newX: number, newY: number) {
+    setX(position, newX);
+    setY(position, newY);
+    return position;
 }
 
 export {
@@ -38,5 +46,6 @@ export {
     getX,
     getY,
     setX,
-    setY
+    setY,
+    setXY
 };

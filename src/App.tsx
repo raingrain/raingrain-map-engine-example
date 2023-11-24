@@ -1,19 +1,11 @@
 import { createMapDocument } from "./core-2d/MapDocument.ts";
 import { createMultiPolygonLayer, createPointLayer } from "./core-2d/Layer.ts";
-import { createGRView2D, destroyGRView2D } from "./core-2d/GRView2D.ts";
+import { createGRView2D, destroyGRView2D } from "./core-2d/MapWindow.ts";
 import { shangHai } from "./310000.ts";
 import { readGeoJson } from "./core-2d/read.ts";
 import { createMultiPolygonFeature, createPointFeature } from "./core-2d/Feature.ts";
 import { GeoJSON, Position } from "./core-2d/type.ts";
-
-
-// function createRandomPoint(width: number, height: number) {
-//     let data = [];
-//     for (let i = 0; i < 10000; i++) {
-//         data.push([Math.random() * width, Math.random() * height]);
-//     }
-//     return data;
-// }
+import { Renderer } from "@antv/g-canvas";
 
 export const App = () => {
 
@@ -38,7 +30,7 @@ export const App = () => {
         //         return createXY(value[0], value[1]);
         //     })));
         // });
-        // document.addLayer(polygonLayer);
+        // mapDocument.addLayer(polygonLayer);
 
         const multiPolygonLayer = createMultiPolygonLayer();
         let polygonData = shangHai.features.map((value) => {
@@ -57,22 +49,13 @@ export const App = () => {
         });
         document.addLayer(multiPolygonLayer);
         console.log(document);
-        createGRView2D(
-            "container",
-            800,
-            800,
-            document
-        );
-        // grView.canvas.appendChild(new Circle({
-        //     style: {
-        //
-        //         cx: 400,
-        //         cy: 250,
-        //         r: 10,
-        //         fill: "purple",
-        //         cursor: "pointer"
-        //     }
-        // }));
+        createGRView2D({
+            container: "container",
+            width: 800,
+            height: 500,
+            background: "gray",
+            renderer: new Renderer()
+        },document);
     }
 
     function handleClick2() {
