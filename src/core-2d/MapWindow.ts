@@ -1,7 +1,7 @@
-import { Canvas, CanvasConfig, Circle, Polygon } from "@antv/g";
+import { Canvas, CanvasConfig } from "@antv/g";
 import { MapDocument } from "./MapDocument.ts";
 import { MultiPolygonLayer, PointLayer } from "./Layer.ts";
-import { BBox, Position } from "./type.ts";
+import { BBox, DisplayObjectUnion, FeatureObjectUnion, LayerObjectUnion, Position } from "./type.ts";
 import {
     copyBBox,
     createPosition,
@@ -16,6 +16,7 @@ import {
     setCenterAndWidthAndHeight,
     setXY
 } from "./utils";
+import { PointFeature, PolygonFeature } from "./Feature.ts";
 
 
 class MapWindow {
@@ -35,6 +36,7 @@ class MapWindow {
         this.screenHeight = this.canvas.getConfig().height!;
         this.mapDocument = mapDocument;
         this.updateMapBBoxAndScale(copyBBox(this.mapDocument.bbox));
+        this.firstDraw()
         this.displayFullMap();
         this.initializeEvent();
     }
@@ -117,75 +119,58 @@ class MapWindow {
         this.canvas.destroy(true);
     };
 
+    appendDisplayObjectToCanvas = (displayObject: DisplayObjectUnion) => {
+        this.canvas.appendChild(displayObject);
+    };
+
+    addEventListenerToDisplayObject = (layer: LayerObjectUnion, feature: FeatureObjectUnion, displayObject: DisplayObjectUnion) => {
+        displayObject!.addEventListener("click", () => {
+            console.log(layer);
+            console.log(feature);
+        });
+    };
+
+    appendDisplayObjectToCanvasAndAddEventListenerToDisplayObject = (layer: LayerObjectUnion, feature: FeatureObjectUnion, displayObject: DisplayObjectUnion) => {
+        this.appendDisplayObjectToCanvas(displayObject);
+        this.addEventListenerToDisplayObject(layer, feature, displayObject);
+    };
+
+    firstDraw = () => {
+        this.mapDocument.layers.forEach((layer) => {
+            layer.features.forEach((feature) => {
+                if (feature instanceof PointFeature || feature instanceof PolygonFeature) {
+                    this.appendDisplayObjectToCanvasAndAddEventListenerToDisplayObject(layer, feature, feature.displayObject);
+                } else {
+                    feature.displayObject.forEach((object) => {
+                        this.appendDisplayObjectToCanvasAndAddEventListenerToDisplayObject(layer, feature, object);
+                    });
+                }
+            });
+        });
+    };
+
     draw = () => {
         for (const layer of this.mapDocument.layers) {
             if (layer instanceof PointLayer) {
                 for (const feature of layer.features) {
                     const screenCoordinate = this.positionToScreenCoordinate(feature.geometry.coordinates);
-                    if (!feature.displayObject) {
-                        feature.displayObject = new Circle({
-                            style: {
-                                cx: screenCoordinate[0],
-                                cy: screenCoordinate[1],
-                                r: 5,
-                                fill: "red",
-                                cursor: "pointer"
-                            }
-                        });
-                        feature.displayObject.addEventListener("click", () => {
-                            console.log(feature);
-                        });
-                        this.canvas.appendChild(feature.displayObject);
-                    } else {
-                        feature.displayObject.setLocalPosition(screenCoordinate[0], screenCoordinate[1]);
-                    }
-
-                    // else
-                    //     if (feature.shouldRender(this.grMap2D)) {
-                    //         // feature.displayObject.setLocalPosition(cx, cy);
-                    //         // this.canvas.appendChild(feature.displayObject);
-                    //     }
+                    feature.displayObject.setLocalPosition(getX(screenCoordinate), getY(screenCoordinate));
                 }
             } else if (layer instanceof MultiPolygonLayer) {
                 for (const feature of layer.features) {
-                    const polygons = feature.geometry.coordinates.map((polygon) => {
+                    const screenCoordinates = feature.geometry.coordinates.map((polygon) => {
                         return polygon.map((lineString) => {
                             return lineString.map((value) => {
                                 return this.positionToScreenCoordinate(value);
                             });
                         });
                     });
-                    if (!feature.displayObject) {
-                        feature.displayObject = [];
-                        polygons.forEach((polygon) => {
-                            polygon.forEach((lineString) => {
-                                const newP = new Polygon({
-                                    style: {
-                                        points: lineString as Position[],
-                                        fill: "#C6E5FF",
-                                        stroke: "#1890FF",
-                                        lineWidth: 2,
-                                        cursor: "pointer",
-                                        opacity: 0.5
-                                    }
-                                });
-                                feature.displayObject!.push(newP);
-                            });
-                        });
-                        feature.displayObject.forEach((p) => {
-                            this.canvas.appendChild(p);
-                        });
-                    } else {
-                        for (let i = 0; i < feature.displayObject.length; i++) {
-                            // @ts-ignore
-                            feature.displayObject[i].style.points = polygons[i][0];
-                        }
+                    for (let i = 0; i < feature.displayObject.length; i++) {
+                        feature.displayObject[i].style.points = screenCoordinates[i][0];
                     }
-
                 }
             }
         }
-
     };
 
     displayFullMap = () => {

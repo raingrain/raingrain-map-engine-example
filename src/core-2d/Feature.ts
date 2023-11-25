@@ -10,22 +10,25 @@ import {
     Position
 } from "./type.ts";
 import { createBBox, getMultiPolygonBBox, getPolygonBBox } from "./utils";
+import { Circle, Polygon as GPolygon } from "@antv/g";
+import { DefaultDisplayObjectConfig } from "./Layer.ts";
 
 
 class PointFeature implements Feature {
 
     public type: "Feature" = "Feature";
-    public properties: GeoJsonProperties;
-    public displayObject: PointFeatureDisplayObject = null;
     public geometry: Point;
+    public properties: GeoJsonProperties;
+    public displayObject: PointFeatureDisplayObject;
 
     constructor(coordinates: Position, properties: GeoJsonProperties = null) {
-        this.properties = properties;
         this.geometry = {
             type: "Point",
             coordinates,
             bbox: createBBox(coordinates, coordinates)
         };
+        this.properties = properties;
+        this.displayObject = new Circle(DefaultDisplayObjectConfig.defaultPointFeatureDisplayObjectConfig);
     }
 
 
@@ -38,17 +41,18 @@ function createPointFeature(position: Position, properties: GeoJsonProperties = 
 class PolygonFeature implements Feature {
 
     public type: "Feature" = "Feature";
-    public properties: GeoJsonProperties;
-    public displayObject: PolygonFeatureDisplayObject = null;
     public geometry: Polygon;
+    public properties: GeoJsonProperties;
+    public displayObject: PolygonFeatureDisplayObject;
 
     constructor(coordinates: Position[][], properties: GeoJsonProperties = null) {
-        this.properties = properties;
         this.geometry = {
             type: "Polygon",
             coordinates,
             bbox: getPolygonBBox(coordinates)
         };
+        this.properties = properties;
+        this.displayObject = new GPolygon(DefaultDisplayObjectConfig.defaultPolygonFeatureDisplayObjectConfig);
     }
 
 }
@@ -60,17 +64,20 @@ function createPolygonFeature(coordinates: Position[][], properties: GeoJsonProp
 class MultiPolygonFeature implements Feature {
 
     public type: "Feature" = "Feature";
-    public properties: GeoJsonProperties;
-    public displayObject: MultiPolygonFeatureDisplayObject = null;
     public geometry: MultiPolygon;
+    public properties: GeoJsonProperties;
+    public displayObject: MultiPolygonFeatureDisplayObject;
 
     constructor(coordinates: Position[][][], properties: GeoJsonProperties = null) {
-        this.properties = properties;
         this.geometry = {
             type: "MultiPolygon",
             coordinates,
             bbox: getMultiPolygonBBox(coordinates)
         };
+        this.properties = properties;
+        this.displayObject = coordinates.map(() => {
+            return new GPolygon(DefaultDisplayObjectConfig.defaultPolygonFeatureDisplayObjectConfig);
+        });
     }
 }
 

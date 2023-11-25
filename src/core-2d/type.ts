@@ -12,17 +12,19 @@ type GeoJsonProperties =
     }
     | null;
 
-type PointFeatureDisplayObject = Circle | null;
+type DisplayObjectUnion = Circle |Polyline|GPolygon
 
-type MultiPointFeatureDisplayObject = Circle[] | null;
+type PointFeatureDisplayObject = Circle;
 
-type LineStringFeatureDisplayObject = Polyline | null;
+type MultiPointFeatureDisplayObject = Circle[];
 
-type MultiLineStringFeatureDisplayObject = Polyline[] | null;
+type LineStringFeatureDisplayObject = Polyline;
 
-type PolygonFeatureDisplayObject = GPolygon | null;
+type MultiLineStringFeatureDisplayObject = Polyline[];
 
-type MultiPolygonFeatureDisplayObject = GPolygon[] | null
+type PolygonFeatureDisplayObject = GPolygon;
+
+type MultiPolygonFeatureDisplayObject = GPolygon[]
 
 type FeatureDisplayObject =
     PointFeatureDisplayObject
@@ -113,6 +115,7 @@ export type {
     Position,
     BBox,
     GeoJsonProperties,
+    DisplayObjectUnion,
     PointFeatureDisplayObject,
     MultiPointFeatureDisplayObject,
     LineStringFeatureDisplayObject,
