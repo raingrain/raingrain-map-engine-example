@@ -1,4 +1,5 @@
 import {
+    CanvasConfig,
     Circle,
     CircleStyleProps,
     DisplayObjectConfig,
@@ -8,8 +9,9 @@ import {
     PolylineStyleProps
 } from "@antv/g";
 import { Position } from "../type.ts";
+import { Renderer } from "@antv/g-canvas";
 
-class DefaultDisplayObjectConfig {
+class DefaultConfig {
     public static readonly defaultPointFeatureOrMultiPointFeatureDisplayObjectConfig: DisplayObjectConfig<CircleStyleProps> = {
         style: {
             cx: 0,
@@ -36,10 +38,14 @@ class DefaultDisplayObjectConfig {
             opacity: 0.5
         }
     };
+    public static readonly defaultCanvasConfig: CanvasConfig = {
+        background: "gray",
+        renderer: new Renderer()
+    };
 }
 
 function createDefaultPointFeatureDisplayObject() {
-    return new Circle(DefaultDisplayObjectConfig.defaultPointFeatureOrMultiPointFeatureDisplayObjectConfig);
+    return new Circle(DefaultConfig.defaultPointFeatureOrMultiPointFeatureDisplayObjectConfig);
 }
 
 function createDefaultMultiPointFeatureDisplayObject(coordinates: Position[]) {
@@ -49,7 +55,7 @@ function createDefaultMultiPointFeatureDisplayObject(coordinates: Position[]) {
 }
 
 function createDefaultLineStringFeatureDisplayObject() {
-    return new Polyline(DefaultDisplayObjectConfig.defaultLineStringFeatureOrMultiLineStringFeatureDisplayObjectConfig);
+    return new Polyline(DefaultConfig.defaultLineStringFeatureOrMultiLineStringFeatureDisplayObjectConfig);
 }
 
 function createDefaultMultiLineStringFeatureDisplayObject(coordinates: Position[][]) {
@@ -59,7 +65,7 @@ function createDefaultMultiLineStringFeatureDisplayObject(coordinates: Position[
 }
 
 function createDefaultPolygonFeatureDisplayObject() {
-    return new GPolygon(DefaultDisplayObjectConfig.defaultPolygonFeatureOrMultiPolygonFeatureDisplayObjectConfig);
+    return new GPolygon(DefaultConfig.defaultPolygonFeatureOrMultiPolygonFeatureDisplayObjectConfig);
 }
 
 function createDefaultMultiPolygonFeatureDisplayObject(coordinates: Position[][][]) {
@@ -69,7 +75,7 @@ function createDefaultMultiPolygonFeatureDisplayObject(coordinates: Position[][]
 }
 
 export {
-    DefaultDisplayObjectConfig,
+    DefaultConfig,
     createDefaultPointFeatureDisplayObject,
     createDefaultMultiPointFeatureDisplayObject,
     createDefaultLineStringFeatureDisplayObject,

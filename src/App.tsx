@@ -4,7 +4,6 @@ import { createMapDocument } from "./core-2d/MapDocument.ts";
 import { readFeatureCollectionAsALayer } from "./core-2d/read.ts";
 import { FeatureCollection } from "./core-2d/type.ts";
 import { createGRView2D } from "./core-2d/MapWindow.ts";
-import { Renderer } from "@antv/g-canvas";
 
 export const App = () => {
 
@@ -52,10 +51,8 @@ export const App = () => {
         // console.log(document);
         createGRView2D({
             container: "container",
-            width: 1200,
-            height: 1000,
-            background: "gray",
-            renderer: new Renderer()
+            width: 1000,
+            height: 800
         }, document);
         // document.layers.forEach((layer) => {
         //     layer.features.forEach((feature) => {

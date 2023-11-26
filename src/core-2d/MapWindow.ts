@@ -5,6 +5,7 @@ import { BBox, DisplayObjectUnion, FeatureObjectUnion, LayerObjectUnion, Positio
 import {
     copyBBox,
     createPosition,
+    DefaultConfig,
     getCenter,
     getHeight,
     getMinX,
@@ -185,8 +186,15 @@ class MapWindow {
 
 let instanceOfGRView2D: MapWindow | null = null;
 
-function createGRView2D(config: CanvasConfig, mapDocument: MapDocument) {
-    instanceOfGRView2D ??= new MapWindow(config, mapDocument);
+function createGRView2D(config: {
+    container: string | HTMLElement;
+    width: number;
+    height: number;
+}, mapDocument: MapDocument) {
+    instanceOfGRView2D ??= new MapWindow({
+        ...config,
+        ...DefaultConfig.defaultCanvasConfig
+    }, mapDocument);
 
     // setInterval(() => {
     //     instanceOfGRView2D?.displayFullMap();

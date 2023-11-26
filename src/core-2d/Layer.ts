@@ -7,7 +7,7 @@ import {
     PolygonFeature
 } from "./Feature.ts";
 import { BBox, GeoJsonGeometryTypes, LayerObject, LayerObjectUnion } from "./type.ts";
-import { createNonexistentBBox, DefaultDisplayObjectConfig, mergeBBox } from "./utils";
+import { createNonexistentBBox, DefaultConfig, mergeBBox } from "./utils";
 import { CircleStyleProps, DisplayObjectConfig, PolygonStyleProps, PolylineStyleProps } from "@antv/g";
 
 
@@ -15,7 +15,7 @@ class PointLayer implements LayerObject {
 
     public bbox: BBox = createNonexistentBBox();
     public features: PointFeature[] = [];
-    public displayObjectConfig: DisplayObjectConfig<CircleStyleProps> = DefaultDisplayObjectConfig.defaultPointFeatureOrMultiPointFeatureDisplayObjectConfig;
+    public displayObjectConfig: DisplayObjectConfig<CircleStyleProps> = DefaultConfig.defaultPointFeatureOrMultiPointFeatureDisplayObjectConfig;
 
     addFeature(newFeature: PointFeature) {
         this.features.push(newFeature);
@@ -27,7 +27,7 @@ class MultiPointLayer implements LayerObject {
 
     public bbox: BBox = createNonexistentBBox();
     public features: MultiPointFeature[] = [];
-    public displayObjectConfig: DisplayObjectConfig<CircleStyleProps> = DefaultDisplayObjectConfig.defaultPointFeatureOrMultiPointFeatureDisplayObjectConfig;
+    public displayObjectConfig: DisplayObjectConfig<CircleStyleProps> = DefaultConfig.defaultPointFeatureOrMultiPointFeatureDisplayObjectConfig;
 
     public addFeature(newFeature: MultiPointFeature) {
         this.features.push(newFeature);
@@ -40,7 +40,7 @@ class LineStringLayer implements LayerObject {
 
     public bbox: BBox = createNonexistentBBox();
     public features: LineStringFeature[] = [];
-    public displayObjectConfig: DisplayObjectConfig<PolylineStyleProps> = DefaultDisplayObjectConfig.defaultLineStringFeatureOrMultiLineStringFeatureDisplayObjectConfig;
+    public displayObjectConfig: DisplayObjectConfig<PolylineStyleProps> = DefaultConfig.defaultLineStringFeatureOrMultiLineStringFeatureDisplayObjectConfig;
 
     public addFeature(newFeature: LineStringFeature) {
         this.features.push(newFeature);
@@ -53,7 +53,7 @@ class MultiLineStringLayer implements LayerObject {
 
     public bbox: BBox = createNonexistentBBox();
     public features: MultiLineStringFeature[] = [];
-    public displayObjectConfig: DisplayObjectConfig<PolylineStyleProps> = DefaultDisplayObjectConfig.defaultLineStringFeatureOrMultiLineStringFeatureDisplayObjectConfig;
+    public displayObjectConfig: DisplayObjectConfig<PolylineStyleProps> = DefaultConfig.defaultLineStringFeatureOrMultiLineStringFeatureDisplayObjectConfig;
 
     public addFeature(newFeature: MultiLineStringFeature) {
         this.features.push(newFeature);
@@ -66,7 +66,7 @@ class PolygonLayer implements LayerObject {
 
     public bbox: BBox = createNonexistentBBox();
     public features: PolygonFeature[] = [];
-    public displayObjectConfig: DisplayObjectConfig<PolygonStyleProps> = DefaultDisplayObjectConfig.defaultPolygonFeatureOrMultiPolygonFeatureDisplayObjectConfig;
+    public displayObjectConfig: DisplayObjectConfig<PolygonStyleProps> = DefaultConfig.defaultPolygonFeatureOrMultiPolygonFeatureDisplayObjectConfig;
 
     addFeature(newFeature: PolygonFeature) {
         this.features.push(newFeature);
@@ -79,7 +79,7 @@ class MultiPolygonLayer implements LayerObject {
 
     public bbox: BBox = createNonexistentBBox();
     public features: MultiPolygonFeature[] = [];
-    public displayObjectConfig: DisplayObjectConfig<PolygonStyleProps> = DefaultDisplayObjectConfig.defaultPolygonFeatureOrMultiPolygonFeatureDisplayObjectConfig;
+    public displayObjectConfig: DisplayObjectConfig<PolygonStyleProps> = DefaultConfig.defaultPolygonFeatureOrMultiPolygonFeatureDisplayObjectConfig;
 
     addFeature(newFeature: MultiPolygonFeature) {
         this.features.push(newFeature);

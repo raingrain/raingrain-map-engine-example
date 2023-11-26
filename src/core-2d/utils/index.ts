@@ -34,11 +34,11 @@ export {
     mergeBBox
 } from "./bboxOperations.ts";
 export {
-    DefaultDisplayObjectConfig,
+    DefaultConfig,
     createDefaultPointFeatureDisplayObject,
     createDefaultMultiPointFeatureDisplayObject,
     createDefaultLineStringFeatureDisplayObject,
     createDefaultMultiLineStringFeatureDisplayObject,
     createDefaultPolygonFeatureDisplayObject,
     createDefaultMultiPolygonFeatureDisplayObject
-} from "./displayObjectOperations.ts";
+} from "./configOperations.ts";
