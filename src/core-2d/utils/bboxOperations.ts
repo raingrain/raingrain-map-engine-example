@@ -1,4 +1,4 @@
-import { BBox, Position } from "../type.ts";
+import { BBox, Geometry, Position } from "../type.ts";
 import { createPosition, getX, getY } from "./positionOperations.ts";
 import { cloneDeep } from "lodash";
 
@@ -120,27 +120,52 @@ function mergeBBox(...bboxes: BBox[]) {
     return mergeBBox;
 }
 
-function getPolygonBBox(coordinates: Position[][]) {
-    const bbox = createNonexistentBBox();
-    coordinates.forEach((lineString) => {
-        lineString.forEach((point) => {
-            setBBox(
-                bbox,
-                Math.min(getMinX(bbox), getX(point)),
-                Math.min(getMinY(bbox), getY(point)),
-                Math.max(getMaxX(bbox), getX(point)),
-                Math.max(getMaxY(bbox), getY(point))
-            );
-        });
-    });
-    return bbox;
+function getPointBBox(coordinates: Position) {
+    return createBBox(coordinates, coordinates);
+}
+
+function getMultiPointBBoxOrLineStringBBox(coordinates: Position[]) {
+    return mergeBBox(...coordinates.map((point) => {
+        return getPointBBox(point);
+    }));
+}
+
+function getMultiLineStringBBoxOrPolygonBBox(coordinates: Position[][]) {
+    return mergeBBox(...coordinates.map((lineString) => {
+        return getMultiPointBBoxOrLineStringBBox(lineString);
+    }));
 }
 
 function getMultiPolygonBBox(coordinates: Position[][][]) {
-    const multiPolygonBBox = coordinates.map((polygon) => {
-        return getPolygonBBox(polygon);
-    });
-    return mergeBBox(...multiPolygonBBox);
+    return mergeBBox(...coordinates.map((polygon) => {
+        return getMultiLineStringBBoxOrPolygonBBox(polygon);
+    }));
+}
+
+function getGeometryBBox(geometry: Geometry) {
+    switch (geometry.type) {
+        case "Point":
+            return getPointBBox(geometry.coordinates);
+        case "MultiPoint":
+            return getMultiPointBBoxOrLineStringBBox(geometry.coordinates);
+        case "LineString":
+            return getMultiPointBBoxOrLineStringBBox(geometry.coordinates);
+        case "MultiLineString":
+            return getMultiLineStringBBoxOrPolygonBBox(geometry.coordinates);
+        case "Polygon":
+            return getMultiLineStringBBoxOrPolygonBBox(geometry.coordinates);
+        case "MultiPolygon":
+            return getMultiPolygonBBox(geometry.coordinates);
+        default:
+            throw new Error("不是正确的Geometry类型，无法计算bbox");
+    }
+}
+
+function createGeometryWithBBox(geometry: Geometry) {
+    return {
+        ...geometry,
+        bbox: getGeometryBBox(geometry)
+    };
 }
 
 export {
@@ -161,7 +186,11 @@ export {
     getCenter,
     setCenter,
     setCenterAndWidthAndHeight,
-    getPolygonBBox,
+    getPointBBox,
+    getMultiPointBBoxOrLineStringBBox,
+    getMultiLineStringBBoxOrPolygonBBox,
     getMultiPolygonBBox,
+    getGeometryBBox,
+    createGeometryWithBBox,
     mergeBBox
 };

@@ -1,39 +1,21 @@
-import { MultiPolygonFeature, PointFeature, PolygonFeature } from "./Feature.ts";
-import { BBox, LayerObject } from "./type.ts";
-import { createNonexistentBBox, mergeBBox } from "./utils";
-import { CircleStyleProps, DisplayObjectConfig, PolygonStyleProps } from "@antv/g";
+import {
+    LineStringFeature,
+    MultiLineStringFeature,
+    MultiPointFeature,
+    MultiPolygonFeature,
+    PointFeature,
+    PolygonFeature
+} from "./Feature.ts";
+import { BBox, GeoJsonGeometryTypes, LayerObject, LayerObjectUnion } from "./type.ts";
+import { createNonexistentBBox, DefaultDisplayObjectConfig, mergeBBox } from "./utils";
+import { CircleStyleProps, DisplayObjectConfig, PolygonStyleProps, PolylineStyleProps } from "@antv/g";
 
-// import { BaseStyleProps } from "@antv/g-lite/dist/types";
-
-class DefaultDisplayObjectConfig {
-    static readonly defaultPointFeatureDisplayObjectConfig: DisplayObjectConfig<CircleStyleProps> = {
-        style: {
-            cx: 0,
-            cy: 0,
-            r: 5,
-            fill: "red",
-            cursor: "pointer"
-        }
-    };
-    static readonly defaultPolygonFeatureDisplayObjectConfig: DisplayObjectConfig<PolygonStyleProps> = {
-        style: {
-            points: [[0, 0]],
-            fill: "#C6E5FF",
-            stroke: "#1890FF",
-            lineWidth: 2,
-            cursor: "pointer",
-            opacity: 0.5
-        }
-    };
-}
 
 class PointLayer implements LayerObject {
 
-    public features: PointFeature[] = [];
     public bbox: BBox = createNonexistentBBox();
-    public displayObjectConfig: DisplayObjectConfig<CircleStyleProps> = DefaultDisplayObjectConfig.defaultPointFeatureDisplayObjectConfig;
-
-    constructor() {}
+    public features: PointFeature[] = [];
+    public displayObjectConfig: DisplayObjectConfig<CircleStyleProps> = DefaultDisplayObjectConfig.defaultPointFeatureOrMultiPointFeatureDisplayObjectConfig;
 
     addFeature(newFeature: PointFeature) {
         this.features.push(newFeature);
@@ -41,17 +23,50 @@ class PointLayer implements LayerObject {
     }
 }
 
-function createPointLayer() {
-    return new PointLayer();
+class MultiPointLayer implements LayerObject {
+
+    public bbox: BBox = createNonexistentBBox();
+    public features: MultiPointFeature[] = [];
+    public displayObjectConfig: DisplayObjectConfig<CircleStyleProps> = DefaultDisplayObjectConfig.defaultPointFeatureOrMultiPointFeatureDisplayObjectConfig;
+
+    public addFeature(newFeature: MultiPointFeature) {
+        this.features.push(newFeature);
+        this.bbox = mergeBBox(this.bbox, newFeature.geometry.bbox);
+    }
+
+}
+
+class LineStringLayer implements LayerObject {
+
+    public bbox: BBox = createNonexistentBBox();
+    public features: LineStringFeature[] = [];
+    public displayObjectConfig: DisplayObjectConfig<PolylineStyleProps> = DefaultDisplayObjectConfig.defaultLineStringFeatureOrMultiLineStringFeatureDisplayObjectConfig;
+
+    public addFeature(newFeature: LineStringFeature) {
+        this.features.push(newFeature);
+        this.bbox = mergeBBox(this.bbox, newFeature.geometry.bbox);
+    }
+
+}
+
+class MultiLineStringLayer implements LayerObject {
+
+    public bbox: BBox = createNonexistentBBox();
+    public features: MultiLineStringFeature[] = [];
+    public displayObjectConfig: DisplayObjectConfig<PolylineStyleProps> = DefaultDisplayObjectConfig.defaultLineStringFeatureOrMultiLineStringFeatureDisplayObjectConfig;
+
+    public addFeature(newFeature: MultiLineStringFeature) {
+        this.features.push(newFeature);
+        this.bbox = mergeBBox(this.bbox, newFeature.geometry.bbox);
+    }
+
 }
 
 class PolygonLayer implements LayerObject {
 
-    public features: PolygonFeature[] = [];
     public bbox: BBox = createNonexistentBBox();
-    public displayObjectConfig: DisplayObjectConfig<PolygonStyleProps> = DefaultDisplayObjectConfig.defaultPolygonFeatureDisplayObjectConfig;
-
-    constructor() {}
+    public features: PolygonFeature[] = [];
+    public displayObjectConfig: DisplayObjectConfig<PolygonStyleProps> = DefaultDisplayObjectConfig.defaultPolygonFeatureOrMultiPolygonFeatureDisplayObjectConfig;
 
     addFeature(newFeature: PolygonFeature) {
         this.features.push(newFeature);
@@ -60,17 +75,11 @@ class PolygonLayer implements LayerObject {
 
 }
 
-function createPolygonLayer() {
-    return new PolygonLayer();
-}
-
 class MultiPolygonLayer implements LayerObject {
 
-    public features: MultiPolygonFeature[] = [];
     public bbox: BBox = createNonexistentBBox();
-    public displayObjectConfig: DisplayObjectConfig<PolygonStyleProps> = DefaultDisplayObjectConfig.defaultPolygonFeatureDisplayObjectConfig;
-
-    constructor() {}
+    public features: MultiPolygonFeature[] = [];
+    public displayObjectConfig: DisplayObjectConfig<PolygonStyleProps> = DefaultDisplayObjectConfig.defaultPolygonFeatureOrMultiPolygonFeatureDisplayObjectConfig;
 
     addFeature(newFeature: MultiPolygonFeature) {
         this.features.push(newFeature);
@@ -79,16 +88,61 @@ class MultiPolygonLayer implements LayerObject {
 
 }
 
+function createPointLayer() {
+    return new PointLayer();
+}
+
+function createMultiPointLayer() {
+    return new MultiPointLayer();
+}
+
+function createLineStringLayer() {
+    return new LineStringLayer();
+}
+
+function createMultiLineStringLayer() {
+    return new MultiLineStringLayer();
+}
+
+function createPolygonLayer() {
+    return new PolygonLayer();
+}
+
 function createMultiPolygonLayer() {
     return new MultiPolygonLayer();
 }
 
+function createLayer(type: GeoJsonGeometryTypes): LayerObjectUnion {
+    switch (type) {
+        case "Point":
+            return createPointLayer();
+        case "MultiPoint":
+            return createMultiPointLayer();
+        case "LineString":
+            return createLineStringLayer();
+        case "MultiLineString":
+            return createMultiLineStringLayer();
+        case "Polygon":
+            return createMultiPolygonLayer();
+        case "MultiPolygon":
+            return createMultiPolygonLayer();
+        default:
+            throw new Error("不是正确的Geometry类型，无法创建Feature");
+    }
+}
+
 export {
     PointLayer,
+    MultiPointLayer,
+    LineStringLayer,
+    MultiLineStringLayer,
     PolygonLayer,
     MultiPolygonLayer,
     createPointLayer,
+    createMultiPointLayer,
+    createLineStringLayer,
+    createMultiLineStringLayer,
     createPolygonLayer,
     createMultiPolygonLayer,
-    DefaultDisplayObjectConfig
+    createLayer
 };

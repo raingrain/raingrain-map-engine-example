@@ -16,7 +16,7 @@ import {
     setCenterAndWidthAndHeight,
     setXY
 } from "./utils";
-import { PointFeature, PolygonFeature } from "./Feature.ts";
+import { LineStringFeature, PointFeature, PolygonFeature } from "./Feature.ts";
 
 
 class MapWindow {
@@ -36,7 +36,7 @@ class MapWindow {
         this.screenHeight = this.canvas.getConfig().height!;
         this.mapDocument = mapDocument;
         this.updateMapBBoxAndScale(copyBBox(this.mapDocument.bbox));
-        this.firstDraw()
+        this.firstDraw();
         this.displayFullMap();
         this.initializeEvent();
     }
@@ -138,7 +138,7 @@ class MapWindow {
     firstDraw = () => {
         this.mapDocument.layers.forEach((layer) => {
             layer.features.forEach((feature) => {
-                if (feature instanceof PointFeature || feature instanceof PolygonFeature) {
+                if (feature instanceof PointFeature || feature instanceof LineStringFeature || feature instanceof PolygonFeature) {
                     this.appendDisplayObjectToCanvasAndAddEventListenerToDisplayObject(layer, feature, feature.displayObject);
                 } else {
                     feature.displayObject.forEach((object) => {

@@ -25,7 +25,20 @@ export {
     getCenter,
     setCenter,
     setCenterAndWidthAndHeight,
-    getPolygonBBox,
+    getPointBBox,
+    getMultiPointBBoxOrLineStringBBox,
+    getMultiLineStringBBoxOrPolygonBBox,
     getMultiPolygonBBox,
+    getGeometryBBox,
+    createGeometryWithBBox,
     mergeBBox
 } from "./bboxOperations.ts";
+export {
+    DefaultDisplayObjectConfig,
+    createDefaultPointFeatureDisplayObject,
+    createDefaultMultiPointFeatureDisplayObject,
+    createDefaultLineStringFeatureDisplayObject,
+    createDefaultMultiLineStringFeatureDisplayObject,
+    createDefaultPolygonFeatureDisplayObject,
+    createDefaultMultiPolygonFeatureDisplayObject
+} from "./displayObjectOperations.ts";
