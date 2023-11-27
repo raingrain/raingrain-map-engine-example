@@ -9,20 +9,18 @@ import {
 } from "@antv/g";
 import {
     LineStringFeature,
-    MultiLineStringFeature,
-    MultiPointFeature,
-    MultiPolygonFeature,
-    PointFeature,
-    PolygonFeature
-} from "./Feature.ts";
-import {
     LineStringLayer,
+    MultiLineStringFeature,
     MultiLineStringLayer,
+    MultiPointFeature,
     MultiPointLayer,
+    MultiPolygonFeature,
     MultiPolygonLayer,
+    PointFeature,
     PointLayer,
+    PolygonFeature,
     PolygonLayer
-} from "./Layer.ts";
+} from "./core";
 
 type Position = [x: number, y: number];
 

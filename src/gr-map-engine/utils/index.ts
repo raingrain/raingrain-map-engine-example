@@ -42,3 +42,6 @@ export {
     createDefaultPolygonFeatureDisplayObject,
     createDefaultMultiPolygonFeatureDisplayObject
 } from "./configOperations.ts";
+export {
+    readFeatureCollectionAsALayer
+} from "./readGeoJson.ts";

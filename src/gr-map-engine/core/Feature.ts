@@ -14,7 +14,7 @@ import {
     PointFeatureDisplayObject,
     Polygon,
     PolygonFeatureDisplayObject
-} from "./type.ts";
+} from "../types.ts";
 import {
     createDefaultLineStringFeatureDisplayObject,
     createDefaultMultiLineStringFeatureDisplayObject,
@@ -22,7 +22,7 @@ import {
     createDefaultMultiPolygonFeatureDisplayObject,
     createDefaultPointFeatureDisplayObject,
     createDefaultPolygonFeatureDisplayObject
-} from "./utils";
+} from "../utils";
 
 
 class PointFeature implements Feature {

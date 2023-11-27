@@ -1,5 +1,5 @@
-import { BBox, LayerObjectUnion } from "./type.ts";
-import { createNonexistentBBox, mergeBBox } from "./utils";
+import { BBox, LayerObjectUnion } from "../types.ts";
+import { createNonexistentBBox, mergeBBox } from "../utils";
 
 class MapDocument {
 

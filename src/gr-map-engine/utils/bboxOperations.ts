@@ -1,4 +1,4 @@
-import { BBox, Geometry, Position } from "../type.ts";
+import { BBox, Geometry, Position } from "../types.ts";
 import { createPosition, getX, getY } from "./positionOperations.ts";
 import { cloneDeep } from "lodash";
 
@@ -146,13 +146,9 @@ function getGeometryBBox(geometry: Geometry) {
     switch (geometry.type) {
         case "Point":
             return getPointBBox(geometry.coordinates);
-        case "MultiPoint":
+        case "MultiPoint" || "LineString":
             return getMultiPointBBoxOrLineStringBBox(geometry.coordinates);
-        case "LineString":
-            return getMultiPointBBoxOrLineStringBBox(geometry.coordinates);
-        case "MultiLineString":
-            return getMultiLineStringBBoxOrPolygonBBox(geometry.coordinates);
-        case "Polygon":
+        case "MultiLineString" || "Polygon":
             return getMultiLineStringBBoxOrPolygonBBox(geometry.coordinates);
         case "MultiPolygon":
             return getMultiPolygonBBox(geometry.coordinates);

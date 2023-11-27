@@ -1,7 +1,7 @@
 import { Canvas, CanvasConfig } from "@antv/g";
 import { MapDocument } from "./MapDocument.ts";
 import { MultiPolygonLayer, PointLayer } from "./Layer.ts";
-import { BBox, DisplayObjectUnion, FeatureObjectUnion, LayerObjectUnion, Position } from "./type.ts";
+import { BBox, DisplayObjectUnion, FeatureObjectUnion, LayerObjectUnion, Position } from "../types.ts";
 import {
     copyBBox,
     createPosition,
@@ -16,9 +16,8 @@ import {
     setCenter,
     setCenterAndWidthAndHeight,
     setXY
-} from "./utils";
+} from "../utils";
 import { LineStringFeature, PointFeature, PolygonFeature } from "./Feature.ts";
-
 
 class MapWindow {
 
@@ -27,9 +26,10 @@ class MapWindow {
     public screenHeight: number;
     // @ts-ignore
     public mapBBox: BBox;
+    // @ts-ignore
+    public scale: number;
     public mapDocument: MapDocument;
     public zoomFactor: number = 2;
-    public scale: number = 0;
 
     constructor(config: CanvasConfig, mapDocument: MapDocument) {
         this.canvas = new Canvas(config);
@@ -37,7 +37,7 @@ class MapWindow {
         this.screenHeight = this.canvas.getConfig().height!;
         this.mapDocument = mapDocument;
         this.updateMapBBoxAndScale(copyBBox(this.mapDocument.bbox));
-        this.firstDraw();
+        this.beforeFirstDraw();
         this.displayFullMap();
         this.initializeEvent();
     }
@@ -70,13 +70,13 @@ class MapWindow {
                 getX(oldMapBBoxCenter) + mapOffsetXFromDragStartToDragStop,
                 getY(oldMapBBoxCenter) + mapOffsetYFromDragStartToDragStop
             )));
-            this.draw();
+            this.redraw();
         };
         this.canvas.addEventListener("mousedown", dragStart);
         this.canvas.addEventListener("mouseup", dragStop);
     };
 
-    zoomTest = (event: any) => {
+    zoom = (event: any) => {
         const zoomFactor = event.deltaY <= 0 ? 1 / this.zoomFactor : this.zoomFactor;
         const newMapBBoxWidth = getWidth(this.mapBBox) * zoomFactor;
         const newMapBBoxHeight = getHeight(this.mapBBox) * zoomFactor;
@@ -88,17 +88,16 @@ class MapWindow {
         const screenOffsetYFromZoomCenterToScreenCenter = getY(screenCenterScreenCoordinate) - getY(zoomCenterScreenCoordinate);
         const mapOffsetYFromZoomCenterToScreenCenter = -screenOffsetYFromZoomCenterToScreenCenter * this.scale * zoomFactor;
         this.updateMapBBoxAndScale(setCenterAndWidthAndHeight(this.mapBBox, createPosition(getX(zoomCenterPosition) + mapOffsetXFromZoomCenterToScreenCenter, getY(zoomCenterPosition) + mapOffsetYFromZoomCenterToScreenCenter), newMapBBoxWidth, newMapBBoxHeight));
-    };
-
-    zoom = (event: WheelEvent) => {
-        this.zoomTest(event);
-        this.draw();
+        this.redraw();
     };
 
     initializeEvent = () => {
         // this.canvas.removeEventListener("wheel", this.zoom);
         this.canvas.addEventListener("wheel", this.zoom);
         this.drag();
+        // setInterval(() => {
+        //     this.displayFullMap();
+        // }, 3000);
     };
 
     positionToScreenCoordinate = (position: Position) => {
@@ -115,28 +114,36 @@ class MapWindow {
         );
     };
 
-    destroyCanvas = () => {
-        console.log(this.canvas);
+    destroy = () => {
+        this.canvas.destroyChildren();
         this.canvas.destroy(true);
     };
 
-    appendDisplayObjectToCanvas = (displayObject: DisplayObjectUnion) => {
+    displayFullMap = () => {
+        this.updateMapBBoxAndScale(copyBBox(this.mapDocument.bbox));
+        const newMapBBoxWidth = this.scale * this.screenWidth;
+        const newMapBBoxHeight = this.scale * this.screenHeight;
+        this.updateMapBBoxAndScale(setCenterAndWidthAndHeight(this.mapBBox, getCenter(this.mapBBox), newMapBBoxWidth, newMapBBoxHeight));
+        this.redraw();
+    };
+
+    private appendDisplayObjectToCanvas = (displayObject: DisplayObjectUnion) => {
         this.canvas.appendChild(displayObject);
     };
 
-    addEventListenerToDisplayObject = (layer: LayerObjectUnion, feature: FeatureObjectUnion, displayObject: DisplayObjectUnion) => {
+    private addEventListenerToDisplayObject = (layer: LayerObjectUnion, feature: FeatureObjectUnion, displayObject: DisplayObjectUnion) => {
         displayObject!.addEventListener("click", () => {
             console.log(layer);
             console.log(feature);
         });
     };
 
-    appendDisplayObjectToCanvasAndAddEventListenerToDisplayObject = (layer: LayerObjectUnion, feature: FeatureObjectUnion, displayObject: DisplayObjectUnion) => {
+    private appendDisplayObjectToCanvasAndAddEventListenerToDisplayObject = (layer: LayerObjectUnion, feature: FeatureObjectUnion, displayObject: DisplayObjectUnion) => {
         this.appendDisplayObjectToCanvas(displayObject);
         this.addEventListenerToDisplayObject(layer, feature, displayObject);
     };
 
-    firstDraw = () => {
+    private beforeFirstDraw = () => {
         this.mapDocument.layers.forEach((layer) => {
             layer.features.forEach((feature) => {
                 if (feature instanceof PointFeature || feature instanceof LineStringFeature || feature instanceof PolygonFeature) {
@@ -150,14 +157,15 @@ class MapWindow {
         });
     };
 
-    draw = () => {
+    private redraw = () => {
         for (const layer of this.mapDocument.layers) {
             if (layer instanceof PointLayer) {
                 for (const feature of layer.features) {
                     const screenCoordinate = this.positionToScreenCoordinate(feature.geometry.coordinates);
                     feature.displayObject.setLocalPosition(getX(screenCoordinate), getY(screenCoordinate));
                 }
-            } else if (layer instanceof MultiPolygonLayer) {
+            }
+            if (layer instanceof MultiPolygonLayer) {
                 for (const feature of layer.features) {
                     const screenCoordinates = feature.geometry.coordinates.map((polygon) => {
                         return polygon.map((lineString) => {
@@ -173,20 +181,11 @@ class MapWindow {
             }
         }
     };
-
-    displayFullMap = () => {
-        this.updateMapBBoxAndScale(copyBBox(this.mapDocument.bbox));
-        const newMapBBoxWidth = this.scale * this.screenWidth;
-        const newMapBBoxHeight = this.scale * this.screenHeight;
-        this.updateMapBBoxAndScale(setCenterAndWidthAndHeight(this.mapBBox, getCenter(this.mapBBox), newMapBBoxWidth, newMapBBoxHeight));
-        this.draw();
-    };
 }
-
 
 let instanceOfGRView2D: MapWindow | null = null;
 
-function createGRView2D(config: {
+function createMapWindow(config: {
     container: string | HTMLElement;
     width: number;
     height: number;
@@ -195,17 +194,12 @@ function createGRView2D(config: {
         ...config,
         ...DefaultConfig.defaultCanvasConfig
     }, mapDocument);
-
-    // setInterval(() => {
-    //     instanceOfGRView2D?.displayFullMap();
-    // }, 3000);
     return instanceOfGRView2D;
 }
 
-function destroyGRView2D() {
-    instanceOfGRView2D?.destroyCanvas();
+function destroyMapWindow() {
+    instanceOfGRView2D?.destroy();
     instanceOfGRView2D = null;
 }
 
-
-export { createGRView2D, destroyGRView2D, MapWindow };
+export { createMapWindow, destroyMapWindow };

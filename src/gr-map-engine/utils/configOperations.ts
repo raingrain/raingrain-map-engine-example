@@ -8,7 +8,7 @@ import {
     Polyline,
     PolylineStyleProps
 } from "@antv/g";
-import { Position } from "../type.ts";
+import { Position } from "../types.ts";
 import { Renderer } from "@antv/g-canvas";
 
 class DefaultConfig {

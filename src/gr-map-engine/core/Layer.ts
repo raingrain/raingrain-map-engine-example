@@ -6,10 +6,9 @@ import {
     PointFeature,
     PolygonFeature
 } from "./Feature.ts";
-import { BBox, GeoJsonGeometryTypes, LayerObject, LayerObjectUnion } from "./type.ts";
-import { createNonexistentBBox, DefaultConfig, mergeBBox } from "./utils";
+import { BBox, GeoJsonGeometryTypes, LayerObject, LayerObjectUnion } from "../types.ts";
+import { createNonexistentBBox, DefaultConfig, mergeBBox } from "../utils";
 import { CircleStyleProps, DisplayObjectConfig, PolygonStyleProps, PolylineStyleProps } from "@antv/g";
-
 
 class PointLayer implements LayerObject {
 
@@ -123,7 +122,7 @@ function createLayer(type: GeoJsonGeometryTypes): LayerObjectUnion {
         case "MultiLineString":
             return createMultiLineStringLayer();
         case "Polygon":
-            return createMultiPolygonLayer();
+            return createPolygonLayer();
         case "MultiPolygon":
             return createMultiPolygonLayer();
         default:

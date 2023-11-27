@@ -1,4 +1,4 @@
-import { Position } from "../type.ts";
+import { Position } from "../types.ts";
 import { cloneDeep } from "lodash";
 
 function createPosition(position: Position): Position
