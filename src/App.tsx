@@ -1,23 +1,27 @@
 import China from "./assets/data/China.json";
+// import ShangHai from "./assets/data/ShangHai.json";
 import {
     createMapDocument,
     createMapWindow,
     destroyMapWindow,
     FeatureCollection,
-    readFeatureCollectionAsALayer
+    readGeoJsonFeatureCollectionAsALayer
 } from "./gr-map-engine";
+import { createGeoJsonFeatureCollectionAsALayer } from "./gr-map-engine/utils/geojson.ts";
 
 export const App = () => {
 
     function handleClickCreate() {
         const document = createMapDocument();
-        const layer = readFeatureCollectionAsALayer(China as any as FeatureCollection);
+        const layer = readGeoJsonFeatureCollectionAsALayer(China as any as FeatureCollection);
         document.addLayer(layer);
         createMapWindow({
             container: "container",
             width: 1000,
             height: 800
         }, document);
+        const json = createGeoJsonFeatureCollectionAsALayer(document.layers[0]);
+        console.log(json);
     }
 
 

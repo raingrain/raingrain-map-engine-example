@@ -27,7 +27,6 @@ import {
 
 class PointFeature implements Feature {
 
-    public type: "Feature" = "Feature";
     public geometry: Point;
     public properties: GeoJsonProperties;
     public displayObject: PointFeatureDisplayObject = createDefaultPointFeatureDisplayObject();
@@ -41,7 +40,6 @@ class PointFeature implements Feature {
 
 class MultiPointFeature implements Feature {
 
-    public type: "Feature" = "Feature";
     public geometry: MultiPoint;
     public properties: GeoJsonProperties;
     public displayObject: MultiPointFeatureDisplayObject;
@@ -56,7 +54,6 @@ class MultiPointFeature implements Feature {
 
 class LineStringFeature implements Feature {
 
-    public type: "Feature" = "Feature";
     public geometry: LineString;
     public properties: GeoJsonProperties;
     public displayObject: LineStringFeatureDisplayObject = createDefaultLineStringFeatureDisplayObject();
@@ -70,7 +67,6 @@ class LineStringFeature implements Feature {
 
 class MultiLineStringFeature implements Feature {
 
-    public type: "Feature" = "Feature";
     public geometry: MultiLineString;
     public properties: GeoJsonProperties;
     public displayObject: MultiLineStringFeatureDisplayObject;
@@ -85,7 +81,6 @@ class MultiLineStringFeature implements Feature {
 
 class PolygonFeature implements Feature {
 
-    public type: "Feature" = "Feature";
     public geometry: Polygon;
     public properties: GeoJsonProperties;
     public displayObject: PolygonFeatureDisplayObject = createDefaultPolygonFeatureDisplayObject();
@@ -99,7 +94,6 @@ class PolygonFeature implements Feature {
 
 class MultiPolygonFeature implements Feature {
 
-    public type: "Feature" = "Feature";
     public geometry: MultiPolygon;
     public properties: GeoJsonProperties;
     public displayObject: MultiPolygonFeatureDisplayObject;

@@ -6,7 +6,7 @@ export {
     setX,
     setY,
     setXY
-} from "./positionOperations.ts";
+} from "./position.ts";
 export {
     createBBox,
     createNonexistentBBox,
@@ -32,7 +32,7 @@ export {
     getGeometryBBox,
     createGeometryWithBBox,
     mergeBBox
-} from "./bboxOperations.ts";
+} from "./bbox.ts";
 export {
     DefaultConfig,
     createDefaultPointFeatureDisplayObject,
@@ -41,7 +41,8 @@ export {
     createDefaultMultiLineStringFeatureDisplayObject,
     createDefaultPolygonFeatureDisplayObject,
     createDefaultMultiPolygonFeatureDisplayObject
-} from "./configOperations.ts";
+} from "./config.ts";
 export {
-    readFeatureCollectionAsALayer
-} from "./readGeoJson.ts";
+    readGeoJsonFeatureCollectionAsALayer,
+    createGeoJsonFeatureCollectionAsALayer
+} from "./geojson.ts";

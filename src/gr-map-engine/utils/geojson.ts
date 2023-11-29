@@ -1,4 +1,4 @@
-import { Feature, FeatureCollection } from "../types.ts";
+import { Feature, FeatureCollection, LayerObjectUnion } from "../types.ts";
 import { createFeature, createLayer } from "../core";
 import { createGeometryWithBBox } from "./index.ts";
 
@@ -13,7 +13,7 @@ function checkFeatureOfFeaturesHasSameType(features: Feature[]) {
     return true;
 }
 
-function readFeatureCollectionAsALayer(featureCollection: FeatureCollection) {
+function readGeoJsonFeatureCollectionAsALayer(featureCollection: FeatureCollection) {
     if (!checkFeatureOfFeaturesHasSameType(featureCollection.features)) {
         throw new Error("无法视作一个图层");
     }
@@ -25,6 +25,20 @@ function readFeatureCollectionAsALayer(featureCollection: FeatureCollection) {
     return layer;
 }
 
+function createGeoJsonFeatureCollectionAsALayer(layer: LayerObjectUnion) {
+    return JSON.stringify({
+        type: "FeatureCollection",
+        features: layer.features.map((feature) => {
+            return {
+                type: "Feature",
+                properties: feature.properties,
+                geometry: feature.geometry
+            };
+        })
+    });
+}
+
 export {
-    readFeatureCollectionAsALayer
+    readGeoJsonFeatureCollectionAsALayer,
+    createGeoJsonFeatureCollectionAsALayer
 };

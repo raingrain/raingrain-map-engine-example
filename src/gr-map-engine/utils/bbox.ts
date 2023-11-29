@@ -1,5 +1,5 @@
 import { BBox, Geometry, Position } from "../types.ts";
-import { createPosition, getX, getY } from "./positionOperations.ts";
+import { createPosition, getX, getY } from "./position.ts";
 import { cloneDeep } from "lodash";
 
 function createBBox(bottomLeft: Position, topRight: Position): BBox;

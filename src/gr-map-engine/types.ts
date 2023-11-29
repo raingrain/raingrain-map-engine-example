@@ -138,14 +138,14 @@ interface MultiPolygon extends GeoJsonObject {
 // }
 
 interface Feature<G extends Geometry | null = Geometry, P = GeoJsonProperties> {
-    type: "Feature";
+    type?: "Feature";
     geometry: G;
     id?: string | number | undefined;
     properties?: P;
 }
 
 interface FeatureCollection<G extends Geometry | null = Geometry, P = GeoJsonProperties> {
-    type: "FeatureCollection";
+    type?: "FeatureCollection";
     features: Array<Feature<G, P>>;
 }
 
