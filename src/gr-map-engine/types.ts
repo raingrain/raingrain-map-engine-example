@@ -124,7 +124,7 @@ interface Feature<G extends Geometry | null = Geometry, P = GeoJsonProperties> {
 }
 
 interface FeatureCollection<G extends Geometry | null = Geometry, P = GeoJsonProperties> {
-    type?: "FeatureCollection";
+    type: "FeatureCollection";
     features: Array<Feature<G, P>>;
 }
 

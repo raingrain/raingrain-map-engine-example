@@ -6,12 +6,13 @@ import {
     PointFeature,
     PolygonFeature
 } from "./Feature.ts";
-import { BBox, FeatureObjectUnion, GeoJsonGeometryTypes, LayerObjectUnion } from "../types.ts";
+import { BBox, FeatureCollection, FeatureObjectUnion, GeoJsonGeometryTypes, LayerObjectUnion } from "../types.ts";
 import { createNonexistentBBox, DefaultConfig, mergeBBox } from "../utils";
 import { CircleStyleProps, DisplayObjectConfig, PolygonStyleProps, PolylineStyleProps } from "@antv/g";
 
-class BaseLayer<F extends FeatureObjectUnion, D extends CircleStyleProps | PolylineStyleProps | PolygonStyleProps> {
+class BaseLayer<F extends FeatureObjectUnion, D extends CircleStyleProps | PolylineStyleProps | PolygonStyleProps> implements FeatureCollection {
 
+    public type: "FeatureCollection" = "FeatureCollection";
     public name: string = "";
     public bbox: BBox = createNonexistentBBox();
     public features: F[] = [];
