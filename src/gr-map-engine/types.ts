@@ -37,7 +37,7 @@ type PolygonFeatureDisplayObject = GPolygon;
 
 type MultiPolygonFeatureDisplayObject = GPolygon[]
 
-type FeatureDisplayObject =
+type FeatureDisplayObjectUnion =
     PointFeatureDisplayObject
     | MultiPointFeatureDisplayObject
     | LineStringFeatureDisplayObject
@@ -116,10 +116,11 @@ interface MultiPolygon extends GeoJsonObject {
 // }
 
 interface Feature<G extends Geometry | null = Geometry, P = GeoJsonProperties> {
-    type?: "Feature";
+    type: "Feature";
     geometry: G;
     id?: string | number | undefined;
-    properties?: P;
+    properties: P;
+    displayObject?: FeatureDisplayObjectUnion;
 }
 
 interface FeatureCollection<G extends Geometry | null = Geometry, P = GeoJsonProperties> {
@@ -142,7 +143,7 @@ export type {
     MultiLineStringFeatureDisplayObject,
     PolygonFeatureDisplayObject,
     MultiPolygonFeatureDisplayObject,
-    FeatureDisplayObject,
+    FeatureDisplayObjectUnion,
     // FeatureObject,
     FeatureObjectUnion,
     FeatureObjectArrayUnion,

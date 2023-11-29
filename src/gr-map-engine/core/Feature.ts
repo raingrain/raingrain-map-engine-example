@@ -1,19 +1,14 @@
 import {
     Feature,
+    FeatureDisplayObjectUnion,
     GeoJsonProperties,
     Geometry,
     LineString,
-    LineStringFeatureDisplayObject,
     MultiLineString,
-    MultiLineStringFeatureDisplayObject,
     MultiPoint,
-    MultiPointFeatureDisplayObject,
     MultiPolygon,
-    MultiPolygonFeatureDisplayObject,
     Point,
-    PointFeatureDisplayObject,
-    Polygon,
-    PolygonFeatureDisplayObject
+    Polygon
 } from "../types.ts";
 import {
     createDefaultLineStringFeatureDisplayObject,
@@ -24,84 +19,52 @@ import {
     createDefaultPolygonFeatureDisplayObject
 } from "../utils";
 
-
-class PointFeature implements Feature {
-
-    public geometry: Point;
+class BaseFeature<G extends Geometry> implements Feature {
+    public type: "Feature" = "Feature";
+    public geometry: G;
     public properties: GeoJsonProperties;
-    public displayObject: PointFeatureDisplayObject = createDefaultPointFeatureDisplayObject();
+    public displayObject: FeatureDisplayObjectUnion;
 
+    constructor(geometry: G, properties: GeoJsonProperties = {}, displayObject: FeatureDisplayObjectUnion) {
+        this.geometry = geometry;
+        this.properties = properties;
+        this.displayObject = displayObject;
+    }
+}
+
+class PointFeature extends BaseFeature<Point> {
     constructor(geometry: Point, properties: GeoJsonProperties = {}) {
-        this.geometry = geometry;
-        this.properties = properties;
+        super(geometry, properties, createDefaultPointFeatureDisplayObject());
     }
-
 }
 
-class MultiPointFeature implements Feature {
-
-    public geometry: MultiPoint;
-    public properties: GeoJsonProperties;
-    public displayObject: MultiPointFeatureDisplayObject;
-
+class MultiPointFeature extends BaseFeature<MultiPoint> {
     constructor(geometry: MultiPoint, properties: GeoJsonProperties = {}) {
-        this.geometry = geometry;
-        this.properties = properties;
-        this.displayObject = createDefaultMultiPointFeatureDisplayObject(this.geometry.coordinates);
+        super(geometry, properties, createDefaultMultiPointFeatureDisplayObject(geometry.coordinates));
     }
-
 }
 
-class LineStringFeature implements Feature {
-
-    public geometry: LineString;
-    public properties: GeoJsonProperties;
-    public displayObject: LineStringFeatureDisplayObject = createDefaultLineStringFeatureDisplayObject();
-
+class LineStringFeature extends BaseFeature<LineString> {
     constructor(geometry: LineString, properties: GeoJsonProperties = {}) {
-        this.geometry = geometry;
-        this.properties = properties;
+        super(geometry, properties, createDefaultLineStringFeatureDisplayObject());
     }
-
 }
 
-class MultiLineStringFeature implements Feature {
-
-    public geometry: MultiLineString;
-    public properties: GeoJsonProperties;
-    public displayObject: MultiLineStringFeatureDisplayObject;
-
+class MultiLineStringFeature extends BaseFeature<MultiLineString> {
     constructor(geometry: MultiLineString, properties: GeoJsonProperties = {}) {
-        this.geometry = geometry;
-        this.properties = properties;
-        this.displayObject = createDefaultMultiLineStringFeatureDisplayObject(this.geometry.coordinates);
+        super(geometry, properties, createDefaultMultiLineStringFeatureDisplayObject(geometry.coordinates));
     }
-
 }
 
-class PolygonFeature implements Feature {
-
-    public geometry: Polygon;
-    public properties: GeoJsonProperties;
-    public displayObject: PolygonFeatureDisplayObject = createDefaultPolygonFeatureDisplayObject();
-
+class PolygonFeature extends BaseFeature<Polygon> {
     constructor(geometry: Polygon, properties: GeoJsonProperties = {}) {
-        this.geometry = geometry;
-        this.properties = properties;
+        super(geometry, properties, createDefaultPolygonFeatureDisplayObject());
     }
-
 }
 
-class MultiPolygonFeature implements Feature {
-
-    public geometry: MultiPolygon;
-    public properties: GeoJsonProperties;
-    public displayObject: MultiPolygonFeatureDisplayObject;
-
+class MultiPolygonFeature extends BaseFeature<MultiPolygon> {
     constructor(geometry: MultiPolygon, properties: GeoJsonProperties = {}) {
-        this.geometry = geometry;
-        this.properties = properties;
-        this.displayObject = createDefaultMultiPolygonFeatureDisplayObject(this.geometry.coordinates);
+        super(geometry, properties, createDefaultMultiPolygonFeatureDisplayObject(geometry.coordinates));
     }
 }
 
