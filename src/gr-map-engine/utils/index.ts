@@ -44,5 +44,6 @@ export {
 } from "./config.ts";
 export {
     readGeoJsonFeatureCollectionAsALayer,
-    downloadGeoJsonFeatureCollectionAsALayer
+    createGeoJsonFeatureCollectionAsALayer,
+    downloadGeoJsonFile
 } from "./geojson.ts";

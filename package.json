@@ -13,12 +13,12 @@
         "@antv/g": "^5.18.19",
         "@antv/g-canvas": "^1.11.22",
         "immer": "^10.0.3",
-        "lodash": "^4.17.21",
+        "lodash.clonedeep": "^4.5.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0"
     },
     "devDependencies": {
-        "@types/lodash": "^4.14.201",
+        "@types/lodash.clonedeep": "^4.5.9",
         "@types/react": "^18.2.15",
         "@types/react-dom": "^18.2.7",
         "@vitejs/plugin-react-swc": "^3.3.2",

@@ -81,10 +81,12 @@ type FeatureObjectArrayUnion =
     | MultiPolygonFeature[]
 
 interface LayerObject {
-    name?: string,
+    name: string,
     bbox: BBox;
     features: FeatureObjectArrayUnion;
     displayObjectConfig: DisplayObjectConfig<CircleStyleProps | PolylineStyleProps | PolygonStyleProps>;
+
+    setName(newName: string): void;
 
     addFeature(newFeature: FeatureObjectUnion): void;
 }

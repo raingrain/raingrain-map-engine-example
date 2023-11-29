@@ -12,11 +12,16 @@ import { CircleStyleProps, DisplayObjectConfig, PolygonStyleProps, PolylineStyle
 
 class PointLayer implements LayerObject {
 
+    public name: string = "";
     public bbox: BBox = createNonexistentBBox();
     public features: PointFeature[] = [];
     public displayObjectConfig: DisplayObjectConfig<CircleStyleProps> = DefaultConfig.defaultPointFeatureOrMultiPointFeatureDisplayObjectConfig;
 
-    addFeature(newFeature: PointFeature) {
+    public setName(newName: string) {
+        this.name = newName;
+    }
+
+    public addFeature(newFeature: PointFeature) {
         this.features.push(newFeature);
         this.bbox = mergeBBox(this.bbox, newFeature.geometry.bbox);
     }
@@ -24,9 +29,14 @@ class PointLayer implements LayerObject {
 
 class MultiPointLayer implements LayerObject {
 
+    public name: string = "";
     public bbox: BBox = createNonexistentBBox();
     public features: MultiPointFeature[] = [];
     public displayObjectConfig: DisplayObjectConfig<CircleStyleProps> = DefaultConfig.defaultPointFeatureOrMultiPointFeatureDisplayObjectConfig;
+
+    public setName(newName: string) {
+        this.name = newName;
+    }
 
     public addFeature(newFeature: MultiPointFeature) {
         this.features.push(newFeature);
@@ -37,9 +47,14 @@ class MultiPointLayer implements LayerObject {
 
 class LineStringLayer implements LayerObject {
 
+    public name: string = "";
     public bbox: BBox = createNonexistentBBox();
     public features: LineStringFeature[] = [];
     public displayObjectConfig: DisplayObjectConfig<PolylineStyleProps> = DefaultConfig.defaultLineStringFeatureOrMultiLineStringFeatureDisplayObjectConfig;
+
+    public setName(newName: string) {
+        this.name = newName;
+    }
 
     public addFeature(newFeature: LineStringFeature) {
         this.features.push(newFeature);
@@ -50,9 +65,14 @@ class LineStringLayer implements LayerObject {
 
 class MultiLineStringLayer implements LayerObject {
 
+    public name: string = "";
     public bbox: BBox = createNonexistentBBox();
     public features: MultiLineStringFeature[] = [];
     public displayObjectConfig: DisplayObjectConfig<PolylineStyleProps> = DefaultConfig.defaultLineStringFeatureOrMultiLineStringFeatureDisplayObjectConfig;
+
+    public setName(newName: string) {
+        this.name = newName;
+    }
 
     public addFeature(newFeature: MultiLineStringFeature) {
         this.features.push(newFeature);
@@ -63,11 +83,16 @@ class MultiLineStringLayer implements LayerObject {
 
 class PolygonLayer implements LayerObject {
 
+    public name: string = "";
     public bbox: BBox = createNonexistentBBox();
     public features: PolygonFeature[] = [];
     public displayObjectConfig: DisplayObjectConfig<PolygonStyleProps> = DefaultConfig.defaultPolygonFeatureOrMultiPolygonFeatureDisplayObjectConfig;
 
-    addFeature(newFeature: PolygonFeature) {
+    public setName(newName: string) {
+        this.name = newName;
+    }
+
+    public addFeature(newFeature: PolygonFeature) {
         this.features.push(newFeature);
         this.bbox = mergeBBox(this.bbox, newFeature.geometry.bbox);
     }
@@ -76,11 +101,16 @@ class PolygonLayer implements LayerObject {
 
 class MultiPolygonLayer implements LayerObject {
 
+    public name: string = "";
     public bbox: BBox = createNonexistentBBox();
     public features: MultiPolygonFeature[] = [];
     public displayObjectConfig: DisplayObjectConfig<PolygonStyleProps> = DefaultConfig.defaultPolygonFeatureOrMultiPolygonFeatureDisplayObjectConfig;
 
-    addFeature(newFeature: MultiPolygonFeature) {
+    public setName(newName: string) {
+        this.name = newName;
+    }
+
+    public addFeature(newFeature: MultiPolygonFeature) {
         this.features.push(newFeature);
         this.bbox = mergeBBox(this.bbox, newFeature.geometry.bbox);
     }

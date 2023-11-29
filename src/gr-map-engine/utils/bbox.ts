@@ -1,6 +1,6 @@
 import { BBox, Geometry, Position } from "../types.ts";
 import { createPosition, getX, getY } from "./position.ts";
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash.clonedeep";
 
 function createBBox(bottomLeft: Position, topRight: Position): BBox;
 function createBBox(minX: number, minY: number, maxX: number, maxY: number): BBox

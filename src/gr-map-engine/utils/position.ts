@@ -1,5 +1,5 @@
 import { Position } from "../types.ts";
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash.clonedeep";
 
 function createPosition(position: Position): Position
 function createPosition(x: number, y: number): Position
