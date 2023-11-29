@@ -28,9 +28,10 @@ function readGeoJsonFeatureCollectionAsALayer(featureCollection: FeatureCollecti
 function createGeoJsonFeatureCollectionAsALayer(layer: LayerObjectUnion) {
     return JSON.stringify({
         type: "FeatureCollection",
-        features: layer.features.map((feature) => {
+        features: layer.features.map((feature, index) => {
             return {
                 type: "Feature",
+                id: index,
                 properties: feature.properties,
                 geometry: feature.geometry
             };
