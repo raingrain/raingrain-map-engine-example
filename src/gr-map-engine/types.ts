@@ -81,6 +81,7 @@ type FeatureObjectArrayUnion =
     | MultiPolygonFeature[]
 
 interface LayerObject {
+    name?: string,
     bbox: BBox;
     features: FeatureObjectArrayUnion;
     displayObjectConfig: DisplayObjectConfig<CircleStyleProps | PolylineStyleProps | PolygonStyleProps>;
