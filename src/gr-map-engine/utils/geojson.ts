@@ -25,8 +25,10 @@ function readGeoJsonFeatureCollectionAsALayer(featureCollection: FeatureCollecti
     return layer;
 }
 
-function createGeoJsonFeatureCollectionAsALayer(layer: LayerObjectUnion) {
-    return JSON.stringify({
+function downloadGeoJsonFeatureCollectionAsALayer(layer: LayerObjectUnion) {
+    const a = document.createElement("a");
+    a.download = "data.json";
+    a.href = "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify({
         type: "FeatureCollection",
         features: layer.features.map((feature, index) => {
             return {
@@ -36,10 +38,12 @@ function createGeoJsonFeatureCollectionAsALayer(layer: LayerObjectUnion) {
                 geometry: feature.geometry
             };
         })
-    });
+    }));
+    a.click();
+    a.remove();
 }
 
 export {
     readGeoJsonFeatureCollectionAsALayer,
-    createGeoJsonFeatureCollectionAsALayer
+    downloadGeoJsonFeatureCollectionAsALayer
 };
