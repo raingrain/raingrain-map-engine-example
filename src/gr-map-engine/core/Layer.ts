@@ -6,115 +6,66 @@ import {
     PointFeature,
     PolygonFeature
 } from "./Feature.ts";
-import { BBox, GeoJsonGeometryTypes, LayerObject, LayerObjectUnion } from "../types.ts";
+import { BBox, FeatureObjectUnion, GeoJsonGeometryTypes, LayerObjectUnion } from "../types.ts";
 import { createNonexistentBBox, DefaultConfig, mergeBBox } from "../utils";
 import { CircleStyleProps, DisplayObjectConfig, PolygonStyleProps, PolylineStyleProps } from "@antv/g";
 
-class PointLayer implements LayerObject {
+class BaseLayer<F extends FeatureObjectUnion, D extends CircleStyleProps | PolylineStyleProps | PolygonStyleProps> {
 
     public name: string = "";
     public bbox: BBox = createNonexistentBBox();
-    public features: PointFeature[] = [];
-    public displayObjectConfig: DisplayObjectConfig<CircleStyleProps> = DefaultConfig.defaultPointFeatureOrMultiPointFeatureDisplayObjectConfig;
+    public features: F[] = [];
+    public displayObjectConfig: DisplayObjectConfig<D>;
+
+    constructor(displayObjectConfig: DisplayObjectConfig<D>) {
+        this.displayObjectConfig = displayObjectConfig;
+    }
 
     public setName(newName: string) {
         this.name = newName;
     }
 
-    public addFeature(newFeature: PointFeature) {
-        this.features.push(newFeature);
-        this.bbox = mergeBBox(this.bbox, newFeature.geometry.bbox);
-    }
-}
-
-class MultiPointLayer implements LayerObject {
-
-    public name: string = "";
-    public bbox: BBox = createNonexistentBBox();
-    public features: MultiPointFeature[] = [];
-    public displayObjectConfig: DisplayObjectConfig<CircleStyleProps> = DefaultConfig.defaultPointFeatureOrMultiPointFeatureDisplayObjectConfig;
-
-    public setName(newName: string) {
-        this.name = newName;
-    }
-
-    public addFeature(newFeature: MultiPointFeature) {
+    public addFeature(newFeature: F) {
         this.features.push(newFeature);
         this.bbox = mergeBBox(this.bbox, newFeature.geometry.bbox);
     }
 
 }
 
-class LineStringLayer implements LayerObject {
-
-    public name: string = "";
-    public bbox: BBox = createNonexistentBBox();
-    public features: LineStringFeature[] = [];
-    public displayObjectConfig: DisplayObjectConfig<PolylineStyleProps> = DefaultConfig.defaultLineStringFeatureOrMultiLineStringFeatureDisplayObjectConfig;
-
-    public setName(newName: string) {
-        this.name = newName;
+class PointLayer extends BaseLayer<PointFeature, CircleStyleProps> {
+    constructor() {
+        super(DefaultConfig.defaultPointFeatureOrMultiPointFeatureDisplayObjectConfig);
     }
-
-    public addFeature(newFeature: LineStringFeature) {
-        this.features.push(newFeature);
-        this.bbox = mergeBBox(this.bbox, newFeature.geometry.bbox);
-    }
-
 }
 
-class MultiLineStringLayer implements LayerObject {
-
-    public name: string = "";
-    public bbox: BBox = createNonexistentBBox();
-    public features: MultiLineStringFeature[] = [];
-    public displayObjectConfig: DisplayObjectConfig<PolylineStyleProps> = DefaultConfig.defaultLineStringFeatureOrMultiLineStringFeatureDisplayObjectConfig;
-
-    public setName(newName: string) {
-        this.name = newName;
+class MultiPointLayer extends BaseLayer<MultiPointFeature, CircleStyleProps> {
+    constructor() {
+        super(DefaultConfig.defaultPointFeatureOrMultiPointFeatureDisplayObjectConfig);
     }
-
-    public addFeature(newFeature: MultiLineStringFeature) {
-        this.features.push(newFeature);
-        this.bbox = mergeBBox(this.bbox, newFeature.geometry.bbox);
-    }
-
 }
 
-class PolygonLayer implements LayerObject {
-
-    public name: string = "";
-    public bbox: BBox = createNonexistentBBox();
-    public features: PolygonFeature[] = [];
-    public displayObjectConfig: DisplayObjectConfig<PolygonStyleProps> = DefaultConfig.defaultPolygonFeatureOrMultiPolygonFeatureDisplayObjectConfig;
-
-    public setName(newName: string) {
-        this.name = newName;
+class LineStringLayer extends BaseLayer<LineStringFeature, PolylineStyleProps> {
+    constructor() {
+        super(DefaultConfig.defaultLineStringFeatureOrMultiLineStringFeatureDisplayObjectConfig);
     }
-
-    public addFeature(newFeature: PolygonFeature) {
-        this.features.push(newFeature);
-        this.bbox = mergeBBox(this.bbox, newFeature.geometry.bbox);
-    }
-
 }
 
-class MultiPolygonLayer implements LayerObject {
-
-    public name: string = "";
-    public bbox: BBox = createNonexistentBBox();
-    public features: MultiPolygonFeature[] = [];
-    public displayObjectConfig: DisplayObjectConfig<PolygonStyleProps> = DefaultConfig.defaultPolygonFeatureOrMultiPolygonFeatureDisplayObjectConfig;
-
-    public setName(newName: string) {
-        this.name = newName;
+class MultiLineStringLayer extends BaseLayer<MultiLineStringFeature, PolylineStyleProps> {
+    constructor() {
+        super(DefaultConfig.defaultLineStringFeatureOrMultiLineStringFeatureDisplayObjectConfig);
     }
+}
 
-    public addFeature(newFeature: MultiPolygonFeature) {
-        this.features.push(newFeature);
-        this.bbox = mergeBBox(this.bbox, newFeature.geometry.bbox);
+class PolygonLayer extends BaseLayer<PolygonFeature, PolygonStyleProps> {
+    constructor() {
+        super(DefaultConfig.defaultPolygonFeatureOrMultiPolygonFeatureDisplayObjectConfig);
     }
+}
 
+class MultiPolygonLayer extends BaseLayer<MultiPolygonFeature, PolygonStyleProps> {
+    constructor() {
+        super(DefaultConfig.defaultPolygonFeatureOrMultiPolygonFeatureDisplayObjectConfig);
+    }
 }
 
 function createPointLayer() {

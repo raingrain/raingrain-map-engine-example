@@ -1,12 +1,4 @@
-import {
-    Circle,
-    CircleStyleProps,
-    DisplayObjectConfig,
-    Polygon as GPolygon,
-    PolygonStyleProps,
-    Polyline,
-    PolylineStyleProps
-} from "@antv/g";
+import { Circle, Polygon as GPolygon, Polyline } from "@antv/g";
 import {
     LineStringFeature,
     LineStringLayer,
@@ -72,24 +64,7 @@ type FeatureObjectUnion =
     | PolygonFeature
     | MultiPolygonFeature
 
-type FeatureObjectArrayUnion =
-    PointFeature[]
-    | MultiPointFeature[]
-    | LineStringFeature[]
-    | MultiLineStringFeature[]
-    | PolygonFeature[]
-    | MultiPolygonFeature[]
-
-interface LayerObject {
-    name: string,
-    bbox: BBox;
-    features: FeatureObjectArrayUnion;
-    displayObjectConfig: DisplayObjectConfig<CircleStyleProps | PolylineStyleProps | PolygonStyleProps>;
-
-    setName(newName: string): void;
-
-    addFeature(newFeature: FeatureObjectUnion): void;
-}
+type FeatureObjectArrayUnion<F extends FeatureObjectUnion = FeatureObjectUnion> = F[]
 
 type LayerObjectUnion =
     PointLayer
@@ -171,7 +146,6 @@ export type {
     // FeatureObject,
     FeatureObjectUnion,
     FeatureObjectArrayUnion,
-    LayerObject,
     LayerObjectUnion,
     Geometry,
     GeoJsonGeometryTypes,
