@@ -149,6 +149,9 @@ interface FeatureCollection<G extends Geometry | null = Geometry, P = GeoJsonPro
     features: Array<Feature<G, P>>;
 }
 
+// interface FeatureCollections {
+//     layers: FeatureCollection;
+// }
 
 export type {
     Position,
