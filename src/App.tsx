@@ -1,5 +1,4 @@
 import China from "./assets/data/China.json";
-// import ShangHai from "./assets/data/ShangHai.json";
 import {
     createGeoJsonFeatureCollectionAsALayer,
     createMapDocument,
@@ -8,7 +7,7 @@ import {
     downloadGeoJsonFile,
     FeatureCollection,
     readGeoJsonFeatureCollectionAsALayer
-} from "./gr-map-engine";
+} from "raingrain-map-engine";
 
 export const App = () => {
 
@@ -19,12 +18,11 @@ export const App = () => {
         mapDocument.addLayer(layer);
         createMapWindow({
             container: "container",
-            width: 1000,
-            height: 800
+            width: 600,
+            height: 600
         }, mapDocument);
         downloadGeoJsonFile(createGeoJsonFeatureCollectionAsALayer(mapDocument.layers[0]), layer.name);
     }
-
 
     function handleClickDestroy() {
         destroyMapWindow();
@@ -32,10 +30,7 @@ export const App = () => {
 
     return (
         <>
-            <div id="container" style={{
-                "border": "1px solid red"
-            }}>
-            </div>
+            <div id="container"></div>
             <button onClick={handleClickCreate}>create</button>
             <button onClick={handleClickDestroy}>destroy</button>
         </>
