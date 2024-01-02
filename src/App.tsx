@@ -1,10 +1,10 @@
 import China from "./assets/data/China.json";
 import {
-    createGeoJsonFeatureCollectionAsALayer,
+    // createGeoJsonFeatureCollectionAsALayer,
     createMapDocument,
     createMapWindow,
     destroyMapWindow,
-    downloadGeoJsonFile,
+    // downloadGeoJsonFile,
     FeatureCollection,
     readGeoJsonFeatureCollectionAsALayer
 } from "raingrain-map-engine";
