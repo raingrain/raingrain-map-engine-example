@@ -1,10 +1,10 @@
 import China from "./assets/data/China.json";
 import {
-    // createGeoJsonFeatureCollectionAsALayer,
+    createGeoJsonFeatureCollectionAsALayer,
     createMapDocument,
     createMapWindow,
     destroyMapWindow,
-    // downloadGeoJsonFile,
+    downloadGeoJsonFile,
     FeatureCollection,
     readGeoJsonFeatureCollectionAsALayer
 } from "raingrain-map-engine";
@@ -26,7 +26,7 @@ export const App = () => {
             height: 600
         }, mapDocument);
         // 下载图层数据至geojson
-        // downloadGeoJsonFile(createGeoJsonFeatureCollectionAsALayer(mapDocument.layers[0]), layer.name);
+        downloadGeoJsonFile(createGeoJsonFeatureCollectionAsALayer(mapDocument.layers[0]), layer.name);
     }
 
     function handleClickDestroy() {
